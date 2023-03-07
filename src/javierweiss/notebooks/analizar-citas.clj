@@ -557,7 +557,7 @@ textos-en-espanol
                     primer puesto, seguido de sus argumentos) y que el anidamiento de expresiones simbólicas se denomina" [:b " forma"]] 
               [:li "Hemos aprendido cuál es la estructura de una función, cómo llamarla y cómo declararla cuando deseemos crear una propia"]
               [:li "Hemos aprendido que cuando cometemos un error (usual aunque no exclusivamente) el intérprete nos envía una excepción y que estas excepciones
-                    pueden detener la ejecución de nuestro programa si no las capturamos con la función." [:b "try-catch"]]
+                    pueden detener la ejecución de nuestro programa si no las capturamos con la función " [:b "try-catch."]]
               [:li "Y por último, pero no menos importante, hemos aprendido que un programa o software se compone de datos y funciones; que las funciones transforman esos 
                     datos para producir nueva información; y que debemos mantener la integridad de nuestros datos y la pureza de nuestras funciones para que así
                     podamos en todo momento comprender qué está haciendo nuestro programa."]]])

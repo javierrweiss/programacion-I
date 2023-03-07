@@ -41,7 +41,7 @@
                                ;; notebooks to be built, accepts globs patterns
                       :nextjournal.clerk/aliases [:clojure2d]
                       :exec-args {:git/url "https://github.com/javierrweiss/programacion-I"
-                                  :paths ["notebooks"]}
+                                  :paths ["src/javierweiss/notebooks/analizar-citas.clj"]}
                       :main-opts ["-m" "babashka.cli.exec"]}
   :clojure2d {:extra-deps {clojure2d/clojure2d {:mvn/version "1.4.4"}}}
   :test {:extra-paths ["test"]
