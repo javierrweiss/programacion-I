@@ -4,11 +4,11 @@
 
 (defn serve-notebooks
   "Serve notebooks on desired port"
-  [port]
+  [{:keys [port] :or {port 7777}}]
   (clerk/serve! {:browse true? :port port}))
-
+ 
 (defn -main
-  "Serve notebooks on select port. Defaults to 7777"
+  "Serve notebooks on selected port. Defaults to 7777"
   [& args]
   {:pre (number? (first args))}
-  (serve-notebooks (first args)))
+  (serve-notebooks {:port (first args)}))
