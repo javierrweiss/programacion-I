@@ -1,12 +1,14 @@
 (ns javierweiss.programacion-I
+  (:require [nextjournal.clerk :as clerk])
   (:gen-class))
 
-(defn greet
-  "Callable entry point to the application."
-  [data]
-  (println (str "Hello, " (or (:name data) "World") "!")))
+(defn serve-notebooks
+  "Serve notebooks on desired port"
+  [port]
+  (clerk/serve! {:browse true? :port port}))
 
 (defn -main
-  "I don't do a whole lot ... yet."
+  "Serve notebooks on select port. Defaults to 7777"
   [& args]
-  (greet {:name (first args)}))
+  {:pre (number? (first args))}
+  (serve-notebooks (first args)))

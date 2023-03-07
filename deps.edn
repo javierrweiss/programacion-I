@@ -13,12 +13,23 @@
         ;; CLI Utils
         org.babashka/cli {:mvn/version "0.5.40"}
         ;; Logging
-        org.slf4j/slf4j-nop {:mvn/version "1.7.36"}}
+        org.slf4j/slf4j-nop {:mvn/version "1.7.36"}
+        ;;Image IO
+        ;;javax.media/jai_imageio {:mvn/version "1.1.1"}
+        ;;Java Native Access (JNA)
+        ;;net.java.dev.jna/jna {:mvn/version "5.13.0"}
+        ;;Apache Commons IO
+        ;;commons-io/commons-io {:mvn/version "2.11.0"}
+        ;;Leptonica Image Processing Library
+        ;;net.sourceforge.lept4j/lept4j {:mvn/version "1.18.0"}
+        ;; Tesseract
+        net.sourceforge.tess4j/tess4j {:mvn/version "5.6.0"}
+        org.clojars.scottxtra/clj-ocr {:mvn/version "0.1.0-SNAPSHOT"}}
  :aliases
  {:run-m {:main-opts ["-m" "javierweiss.programacion-I"]}
   :run-x {:ns-default javierweiss.programacion-I
-          :exec-fn greet
-          :exec-args {:name "Clojure"}}
+          :exec-fn serve-notebooks
+          :exec-args 7777}
   :build {:deps {io.github.seancorfield/build-clj
                  {:git/tag "v0.6.3" :git/sha "9b8e09b"
                   ;; since we're building an app uberjar, we do not
@@ -29,8 +40,8 @@
                       :exec-fn nextjournal.clerk/build!
                                ;; notebooks to be built, accepts globs patterns
                       :nextjournal.clerk/aliases [:clojure2d]
-                      :exec-args {:git/url ""
-                                  :paths []}
+                      :exec-args {:git/url "https://github.com/javierrweiss/programacion-I"
+                                  :paths ["notebooks"]}
                       :main-opts ["-m" "babashka.cli.exec"]}
   :clojure2d {:extra-deps {clojure2d/clojure2d {:mvn/version "1.4.4"}}}
   :test {:extra-paths ["test"]

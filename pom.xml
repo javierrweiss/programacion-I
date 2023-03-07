@@ -5,7 +5,7 @@
   <artifactId>programacion-I</artifactId>
   <version>0.1.0-SNAPSHOT</version>
   <name>javierweiss/programacion-I</name>
-  <description>FIXME: my new application.</description>
+  <description>Notebooks para la enseñanza de programación en Clojure</description>
   <url>https://github.com/javierweiss/programacion-I</url>
   <licenses>
     <license>
@@ -18,6 +18,10 @@
       <name>Jrivero</name>
     </developer>
   </developers>
+  <properties>
+    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.source>17</maven.compiler.source>
+</properties>
   <scm>
     <url>https://github.com/javierweiss/programacion-I</url>
     <connection>scm:git:git://github.com/javierweiss/programacion-I.git</connection>
@@ -28,7 +32,7 @@
     <dependency>
       <groupId>org.clojure</groupId>
       <artifactId>clojure</artifactId>
-      <version>1.10.3</version>
+      <version>1.11.1</version>
     </dependency>
   </dependencies>
   <build>
