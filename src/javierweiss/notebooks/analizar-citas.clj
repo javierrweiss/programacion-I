@@ -567,7 +567,7 @@ textos-en-espanol
 ^{:nextjournal.clerk/visibility {:code :hide :result :hide}} 
 (comment
   (clerk/serve! {:watch-paths ["src"]})
-  
+  (clerk/clear-cache!)
   (ocr/do-ocr
    (ImageIO/read imagen)
    (ocr/set-language "spa"))
