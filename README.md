@@ -31,11 +31,11 @@ Finalmente, una vez que tienes Git instalado, desde tu Powershell o terminal tec
 git clone https://github.com/javierweiss/programacion-I
 ```
 
-### Instalación en Gitpod
+### Instalación en Codespaces
 
-Gitpod es un entorno de desarrollo en la nube, así que puedes abrir un proyecto cualquiera desde tu repositorio en GitHub y empezar a desarrollar dondequiera que te encuentres. 
+Codespaces es un entorno de desarrollo en la nube, así que puedes abrir un proyecto cualquiera desde tu repositorio en GitHub y empezar a desarrollar dondequiera que te encuentres. 
 Lo primero que debes hacer es realizar un *Fork* (mira en la esquina superior derecha, a la misma altura que el nombre del repositorio) de este repositorio, con lo cual crearás un repositorio propio con una copia de éste.
-Luego desde tu propia copia o Fork haz click en el botón verde que dice *Gitpod* y entonces Gitpod te abrirá el repositorio en un entorno en la nube el cual podrás editar usando VSCode.
+Luego desde tu propia copia o Fork haz click en el botón verde que dice *Code* y entonces se te abrirá el repositorio en un entorno en la nube el cual podrás editar usando VSCode.
 
 ## License
 
