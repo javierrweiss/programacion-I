@@ -1,15 +1,13 @@
 ^{:nextjournal.clerk/visibility {:code :hide}}
-(ns analizar-citas
+(ns javierweiss.notebooks.analizar-citas
   (:require [nextjournal.clerk :as clerk]
             [clojure.java.io :as io]
-            [clj-ocr.core :as ocr]
-            [clj-ocr.utils :as ocr-utils]
-            [clojure.string :refer [capitalize join ends-with? starts-with? lower-case upper-case split-lines blank?]])
-  (:import (net.sourceforge.tess4j Tesseract ITesseract)
-           (java.nio.file Path Paths)
+            [clj-ocr.core :as ocr] 
+            [clojure.string :refer [ends-with? starts-with? upper-case split-lines blank?]])
+  (:import (net.sourceforge.tess4j Tesseract) 
            (net.sourceforge.tess4j.util LoadLibs)
            (javax.imageio ImageIO)))
-
+ 
 ^{:nextjournal.clerk/visibility {:code :hide}} 
 (ImageIO/read (io/file "resources/circuito.jpg"))
 
@@ -568,6 +566,8 @@ textos-en-espanol
 (comment
   (clerk/serve! {:watch-paths ["src"]})
   (clerk/clear-cache!)
+
+  (def imagen (io/file "resources/best_shuffle.png"))
   (ocr/do-ocr
    (ImageIO/read imagen)
    (ocr/set-language "spa"))
