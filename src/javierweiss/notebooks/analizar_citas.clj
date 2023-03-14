@@ -11,9 +11,9 @@
 ^{:nextjournal.clerk/visibility {:code :hide}} 
 (ImageIO/read (io/file "resources/circuito.jpg"))
 
-;;  # Nuestro Pequeño Asistente de Investigación
+;;  # Nuestro Pequeño Asistente de Investigación. Parte I
 ;;
-;; Como científicos sociales, en nuestras investigaciones a menudo tomamos notas y citas textuales de 
+;; Como científicos sociales en nuestras investigaciones a menudo tomamos notas y citas textuales de 
 ;; nuestras lecturas. A la hora de escribir un libro o un artículo resulta muy importante tener estas 
 ;; citas organizadas, tanto para realizar un análisis profundo de la literatura revisada como para armar  
 ;;  nuestras referencias bibliográficas.
@@ -50,7 +50,7 @@
 ;; Y es que no podemos controlar cuándo y cómo se mostrará el mensaje; en el momento mismo en que evaluamos la expresión, el computador
 ;; (o para ser más precisos, nuestro intérprete) la imprime. 
 
-;; Cuando escribimos un programa para que sea ejecutado escribimos una serie de instrucciones en un orden estipulado. Pero todo programa
+;; Cuando creamos un programa para que sea ejecutado escribimos una serie de instrucciones en un orden estipulado. Pero todo programa
 ;; necesita datos sobre los cuales operar, por ende, un programa es como una función matemática o como un sistema del tipo _black box_
 ;; que recibe un **input** o insumo y produce un **output** o resultado.
 
@@ -63,6 +63,10 @@
 ;; ese símbolo nos devolverá el valor.
 
 saludo
+
+;; La terminología de _definir_ no es casual. Le subyace la idea de que cuando estamos escribiendo un programa
+;; estamos creando un lenguaje particular que pertenece al dominio (lo que se denomina _Domain Specific Language_ **DSL**)
+;; donde se encuentra el problema que deseamos resolver. 
 
 ;; Lamentablemente, a diferencia de nuestros intérpretes de lenguajes naturales (otros seres humanos),
 ;; el computador no puede inferir nuestra intención comunicativa, por lo que si nos equivocamos 
@@ -157,7 +161,7 @@ numero-racional
 
 (def autores ["Foucault" "Habermas" "Parsons" "Simmel" "Mead" "Luhmann"])
 
-;; Acá, por ejemplo, creamos un vector. Lo poblamos con _strings_ o cadenas de caracteres representando distintos autores. Y vínculamos
+;; Acá, por ejemplo, creamos un vector. Lo poblamos con _strings_ o cadenas de caracteres representando distintos autores. Y vinculamos
 ;; a ese vector el símbolo _autores_ para que así lo podamos invocar luego. Contemos cuántos elementos tiene nuestro vector.
 
 (count autores)
@@ -179,7 +183,7 @@ numero-racional
 
 (last autores)
 
-;; Trabajar con listas es muy parecido a trabajar con vectores (aunque por lo general, en este lenguaje que estamos usando, llamado Clojure,
+;; Trabajar con listas es muy parecido a trabajar con vectores (aunque por lo general, en este lenguaje que estamos usando, llamado **Clojure**,
 ;; se prefiere trabajar con vectores):
 
 (def lista-textos '("El Capital" 
@@ -396,175 +400,17 @@ persona-datos-basicos
 ;; del input, lo cual es muy común) ni emplear funciones en la definición de nuestros datos. De esta manera es mucho más fácil razonar
 ;; sobre nuestros programas y corregir errores cuando estos surjan.
 
-;; Pues bien, ahora que nos sentimos un poco más cómodos con esto de la programación, podemos enfocarnos a resolver nuestro problema: crear
-;; nuestro pequeño asistente de investigación
+;; Este es el final de la primera parte.  
 
-;; ## ¿Qué vamos a hacer?
+;; Siga este [link](https://nextjournal.com/Javierweiss/estructuras-de-datos-clj) para ir a la práctica de esta lección.  
 
-;; Vamos crear un pequeño programa que tome imágenes de texto y las convierta en un string que podamos manipular
+;; Haga click [acá](https://nextjournal.com/Javierweiss/nuestro-peque%C3%B1o-asistente-de-investigaci%C3%B3n-parte-ii-usando-ocr) para continuar con la segunda parte.  
 
-;; ## ¿Qué necesitamos?
 
-;; La tecnología que nos permite convertir imagen a texto se llama **OCR**, esto es, _Optical Character Recognition_, así
-;; que necesitamos una librería que nos permite realizar este proceso. 
-;; Y ¿qué es una librería? Se trata simplemente de un programa que escribió otra persona y que aloja en un repositorio (la 
-;; mayoría de las veces de forma pública y gratuita) desde donde lo podemos descargar. Una vez que lo tengamos donde corresponde 
-;; podemos emplear las funciones que ese programa exponga para su consumo. A esto se le llama API o **Application Programming Interface**.
-;; Una de las ventajas de Clojure y Clojurescript (un lenguaje hermano que corre en el navegador) consiste en que podemos tomar librerías 
-;; escritas en los lenguajes más importantes, a saber, _Java_, _Javascript_ (no tiene nada que ver con Java), _Python_ e incluso _R_.
-
-;; También necesitamos algunas imágenes de prueba.
-
-;; Comencemos
-
-;; Ya tenemos algunas imágenes que he reservado para este fin, también me he ocupado de importar las librerías necesarias,
-;; así que lo primero que haremos será crear una estructura de datos con nuestras imagenes.
-;; Utilizaremos un vector 
-
-(def rutas-imagenes ["resources/temas de hoy.jpg" 
-                     "resources/Carlos_Reynoso_I.jpg"
-                     "resources/Carlos_Reynoso_II.jpg"
-                     "resources/Carlos_Reynoso_III.jpg"])
-
-;; Este vector que hemos creado contiene en un string la ubicación relativa de los archivos. Sin embargo, ese string no representa
-;; el archivo, por ende, debemos convertir cada string en un objeto del tipo _File_. Para eso utilizaremos el método _file_ 
-;; perteneciente a la biblioteca **io** (donde IO representa los conceptos de Input-Output) la cual trabaja con lectura y escritura de archivos 
-;; de todo tipo.
-
-;; Pero ¿cómo le aplicamos esa función a cada uno de los elementos del vector? 
-;; Para eso utilizaremos la función _map_, la cual toma una función y una colección (secuencial, usualmente) y aplica la 
-;; función sobre cada elemento de la misma.
-
-(def imagenes (map (fn [elem] (io/file elem)) rutas-imagenes))
- 
-;; Las funciones pueden ser nombradas, como las que trabajamos arriba, o anónimas como esta que vemos acá con _fn_. El principio es el 
-;; mismo la función en posición de función, seguido por los argumentos o parámetros y luego el cuerpo.
-
-;; Estas son las imágenes con las que vamos a trabajar
-
-^{:nextjournal.clerk/visibility {:code :hide}}
-(map #(ImageIO/read %) imagenes)
-
-;; A continuación tenemos preparada una función que convertirá esas imágenes a texto.
-
-(defn iniciar-ocr
-  "Recibe una imagen (img) de tipo File, el lenguaje (leng) en el que se encuentra el input 
-   (e.g. 'spa') de tipo String y devuelve el texto de la imagen como String. Si se desea agregar
-   el modelo de otro lenguaje además de los incluidos acá (spa=español y eng=inglés) descargar 
-   el modelo de https://github.com/tesseract-ocr/tessdata_best y alojar en la carpeta resources/data."
-  [img leng]
-  (try 
-    (-> (doto (Tesseract.)
-          (.setLanguage leng)
-          (.setDatapath "resources/data"))
-        (.doOCR (ImageIO/read img)))
-    (catch Exception e (.getMessage e))))
-
-;; Veamos qué hicimos acá. En la documentación exponemos el contrato; aclaramos los tipos de datos correspondientes a los 
-;; argumentos y el tipo de dato de retorno. Luego tenemos un forma con varias expresiones simbólicas anidadas. Como si de una
-;; cebolla se tratase, vamos capa por capa, desde lo más externo hasta el interior.
-
-;; En primer lugar tenemos la función _try_ la cual admite dos argumentos que también son expresiones simbólicas. 
-;; La primera es la expresión a ejecutar y la segunda es una expresión cuya función es capturar el error y devolver el mensaje
-;; de error. Así que esta función se encarga de capturar excepciones y enviarnos el mensaje de error para
-;; ser capaces de debuggearlo. Como regla general, siempre que trabajemos con IO debemos envolver nuestras expresiones en un try-catch.
-
-;; Luego tenemos un función muy rara, una flecha **->**. Este en realidad es un macro y su tarea consiste en evitarnos el inconveniente
-;; de anidar demasiadas expresiones simbólicas, lo que haría al código complicado y difícil de entender. Básicamente lo que hace
-;; es tomar el primer elemento y pasarle el resultado a la siguiente y así sucesivamente. Este _threading macro_ o macro de hilado
-;; insertará el resultado de la expresión anterior en el lugar del primer argumento de la expresión siguiente. Si necesitamos
-;; que los valores sean insertados en el último lugar debemos usar **->>**.
-
-;; En el macro de hilado tenemos a la función _doto_ la cual toma un objeto Java (más adelante hablaremos sobre los objetos) y sucesivamente 
-;; llama a los métodos (una clase de funciones) que este objeto pone a disposición para ejecutar la tarea de leer la imagen
-;; y convertirla a texto. 
-
-;; La librería con la que estamos trabajando nos pide que debemos especificar: a) el lenguaje con el que vamos a trabajar, b) la imagen
-;; representada como un objeto del tipo archivo y c) la ruta donde se encuentra el archivo que contiene los modelos entrenados para 
-;; reconocer la lengua seleccionada en cuestión.
-
-;; Nosotros hardcodeamos esa ruta (hardcodear significa fijar el valor de un parámetro, de modo que no se pueda cambiar a no ser
-;; cambiando el código) y recibimos como parámetro la imagen y el lenguaje.
-
-;; En nuestro vector todos los archivos que tenemos son de textos en español. Tenemos un en inglés que podemos usar para realizar
-;; una pequeña prueba. Veamos
-
-;; Esta es la imagen que vamos a probar.
-
-^{:nextjournal.clerk/visibility {:code :hide}}
-(ImageIO/read (io/file "resources/best_shuffle.png"))
-
-;; Y he aquí el resultado:
-
-(def texto-ingles (-> (io/file "resources/best_shuffle.png")
-                      (iniciar-ocr "eng")))
-
-texto-ingles
-
-;; ¡Funcionó! Ahora probemos con nuestra colección. Tal y como hicimos arriba podemos valernos de nuevo de la función _map_.
-
-(def textos-en-espanol (map (fn [archivo] (iniciar-ocr archivo "spa")) imagenes))
-
-textos-en-espanol
-
-;; No es perfecto, es cierto. Pero este problema lo podemos corregir con mejores fotos y tuneando algunos parámetros con las 
-;; herramientas que nos ofrece la librería (cuestión que dejaremos para otra ocasión).
-
-;; Una vez que tenemos estos datos como string podemos hacer lo que deseemos con ellos (siempre y cuando se trate de una operación permita para objetos de este tipo)
-;; Por ejemplo, 
-;; * pidamos el primer texto, 
-;; * dividámoslo por líneas, 
-;; * quitemos los strings vacíos 
-;; * sustituyamos la última palabra por su valor real, a saber, _output_
-;; * y devolvamos como output un solo string con todo el contenido:
-
-(as-> (first textos-en-espanol) txt
-  (split-lines txt)
-  (remove blank? txt)
-  (remove (fn [elem] (= elem "[0]7]10]7)")) txt)
-  (conj (vec txt) " output.")
-  (reduce str txt))
-
-;; La primera función que observamos es otro _threading macro_; dado que **->** inserta el resultado en el lugar del primer argumento
-;; mientras que **->>** lo inserta en el segundo, ¿qué sucede cuando debemos insertar el argumento en diversas posiciones? Pues
-;; para eso tenemos **as->**, el cual vincula el resultado con el símbolo que coloquemos al lado de la primera expresión
-;; simbólica, en este caso, _txt_. 
-
-;; Luego tomamos el primer elemento, lo dividimos por líneas con lo que transformamos
-;; un solo string en un vector de strings; a continuación quitamos todos los espacios en blanco, buscamos los elementos
-;; que sean iguales a _[0]7]10]7)_ (que son los caracteres que el OCR no pudo reconocer); posteriormente agregamos la palabra
-;; correcta al final de la colección (para eso tenemos que convertir la lista que nos devuelve _remove_ en un vector, pues de lo
-;; contrario insertará la palabra _output_ en el primer lugar de la colección) y finalmente aplicamos una reducción, esto es,
-;; de una colección, en este caso de strings, aplicamos la función de concatenación _str_ y obtenemos como resultado un solo 
-;; string. 
-
-^{:nextjournal.clerk/visibility {:code :hide}}
-(clerk/html [:div {:style {:background-color :#E6E6E6 :padding :1rem}}
-             [:h3 "Balance"]
-             [:p "En esta lección hemos armado un pequeño programa que toma como insumo un conjunto de fotos de textos, las convierte a archivo, las lee con la
-                  tecnología OCR y devuelve un texto que podemos manipular, bien sea aplicando una serie de transformaciones sobre el mismo
-                   o escribiéndolos a un archivo, en fin, lo que deseemos."]
-             [:p "En el interín hemos aprendido algunas cosas sobre programación."]
-             [:ol
-              [:li "Hemos aprendido sobre los tipos de datos (númericos, booleanos, strings, caracteres símbolos y llaves)"]
-              [:li "Hemos aprendido a vincular un símbolo con el resultado de una expresión simbólica (lo que también suele denominarse "[:b "declarar una variable"] ")"]
-              [:li "Hemos aprendido que las estructuras de datos almacenan elementos de diverso tipo y que entre ellas tenemos vectores [], listas (), conjuntos #{} y mapas {}."]
-              [:li "Hemos aprendido a manipular, mediante las funciones correspondientes, estas estructuras de datos"]
-              [:li "Hemos aprendido que podemos combinar las estructuras de datos como deseemos"]
-              [:li "Hemos aprendido que en Clojure la unidad básica es la" [:b " expresión simbólica "] "(a saber, simplemente una lista con una función ocupando el 
-                    primer puesto, seguido de sus argumentos) y que el anidamiento de expresiones simbólicas se denomina" [:b " forma"]] 
-              [:li "Hemos aprendido cuál es la estructura de una función, cómo llamarla y cómo declararla cuando deseemos crear una propia"]
-              [:li "Hemos aprendido que cuando cometemos un error (usual aunque no exclusivamente) el intérprete nos envía una excepción y que estas excepciones
-                    pueden detener la ejecución de nuestro programa si no las capturamos con la función " [:b "try-catch."]]
-              [:li "Y por último, pero no menos importante, hemos aprendido que un programa o software se compone de datos y funciones; que las funciones transforman esos 
-                    datos para producir nueva información; y que debemos mantener la integridad de nuestros datos y la pureza de nuestras funciones para que así
-                    podamos en todo momento comprender qué está haciendo nuestro programa."]]])
-
-;; Y esto es todo por hoy. Espero que lo hayan disfrutado.
 
 ^{:nextjournal.clerk/visibility {:code :hide :result :hide}} 
 (comment
-  (clerk/serve! {:watch-paths ["src"]})
+  (clerk/serve! {:watch-paths ["src"] :port 13000}) 
   (clerk/clear-cache!)
 
   (def imagen (io/file "resources/best_shuffle.png"))
