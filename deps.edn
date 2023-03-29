@@ -14,17 +14,17 @@
         org.babashka/cli {:mvn/version "0.5.40"}
         ;; Logging
         org.slf4j/slf4j-nop {:mvn/version "1.7.36"}
-        ;;Image IO
-        ;;javax.media/jai_imageio {:mvn/version "1.1.1"}
-        ;;Java Native Access (JNA)
-        ;;net.java.dev.jna/jna {:mvn/version "5.13.0"}
-        ;;Apache Commons IO
-        ;;commons-io/commons-io {:mvn/version "2.11.0"}
-        ;;Leptonica Image Processing Library
-        ;;net.sourceforge.lept4j/lept4j {:mvn/version "1.18.0"}
+        org.apache.logging.log4j/log4j-core {:mvn/version "2.20.0"}
         ;; Tesseract
         net.sourceforge.tess4j/tess4j {:mvn/version "5.6.0"}
-        org.clojars.scottxtra/clj-ocr {:mvn/version "0.1.0-SNAPSHOT"}}
+        ;; Clerk utils
+        io.github.mentat-collective/clerk-utils
+        {:git/sha "c4558be752b10993c78b76edc64663f4fe08e580"}
+        ;; Clerk render
+        io.github.nextjournal/clerk.render
+        {:git/url "https://github.com/nextjournal/clerk"
+         :git/sha "4180ed31c2864687a770f6d4f625303bd8e75437"
+         :deps/root "render"}}
  :aliases
  {:run-m {:main-opts ["-m" "javierweiss.programacion-I"]}
   :run-x {:ns-default javierweiss.programacion-I
@@ -36,12 +36,20 @@
                   ;; need deps-deploy for clojars.org deployment:
                   :deps/root "slim"}}
           :ns-default build}
-  :nextjournal/clerk {:extra-paths []
-                      :exec-fn nextjournal.clerk/build!
+  :nextjournal/clerk {:extra-deps
+                      {io.github.nextjournal/clerk
+                       {:git/sha "4180ed31c2864687a770f6d4f625303bd8e75437"}
+                       io.github.nextjournal/clerk.render
+                       {:git/url "https://github.com/nextjournal/clerk"
+                        :git/sha "4180ed31c2864687a770f6d4f625303bd8e75437"
+                        :deps/root "render"}}
+                      :exec-fn mentat.clerk-utils.build/build!
                                ;; notebooks to be built, accepts globs patterns
                       :nextjournal.clerk/aliases [:clojure2d]
                       :exec-args {:git/url "https://github.com/javierrweiss/programacion-I"
-                                  :paths ["src/javierweiss/notebooks/analizar_citas.clj"]}
+                                  :paths ["src/javierweiss/notebooks/analizar_citas.clj" "src/javierweiss/notebooks/contextos.clj"] 
+                                  :cljs-namespaces ['javierweiss.cljs.user-inputs]
+                                  :index "src/javierweiss/notebooks/analizar_citas.clj"}
                       :main-opts ["-m" "babashka.cli.exec"]}
   :clojure2d {:extra-deps {clojure2d/clojure2d {:mvn/version "1.4.4"}}}
   :test {:extra-paths ["test"]

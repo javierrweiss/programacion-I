@@ -1,8 +1,7 @@
 ^{:nextjournal.clerk/visibility {:code :hide}}
 (ns javierweiss.notebooks.analizar-citas
   (:require [nextjournal.clerk :as clerk]
-            [clojure.java.io :as io]
-            [clj-ocr.core :as ocr] 
+            [clojure.java.io :as io] 
             [clojure.string :refer [ends-with? starts-with? upper-case split-lines blank?]])
   (:import (net.sourceforge.tess4j Tesseract) 
            (net.sourceforge.tess4j.util LoadLibs)
@@ -410,30 +409,39 @@ persona-datos-basicos
 
 ^{:nextjournal.clerk/visibility {:code :hide :result :hide}} 
 (comment
-  (clerk/serve! {:watch-paths ["src"] :port 13000}) 
+  (clerk/serve! {:watch-paths ["src"] :port 13000})
   (clerk/clear-cache!)
 
   (def imagen (io/file "resources/best_shuffle.png"))
   (ocr/do-ocr
    (ImageIO/read imagen)
    (ocr/set-language "spa"))
-  
+
   (doto (Tesseract.)
     (.doOCR imagen))
 
   (as-> (LoadLibs/extractTessResources "win32-x86-64") tmpFolder
     (System/setProperty "java.library.path" (.getPath tmpFolder)))
 
-  (def data (doto (Tesseract.) 
+  (def data (doto (Tesseract.)
               (.setOcrEngineMode 1)
               (.setDatapath "resources/data")
-              (.setLanguage "spa")    
-              (.doOCR imagen))) 
-  data 
+              (.setLanguage "spa")
+              (.doOCR imagen)))
+  data
   (-> (doto (Tesseract.)
         (.setLanguage "spa")
         (.setDatapath "resources/data"))
-      (.doOCR (ImageIO/read imagen)))  
-  
-  
+      (.doOCR (ImageIO/read imagen)))
+
+  (def alfa 1050)
+
+  (defn calculo
+    [a]
+    (let [alfa 9]
+      (* a alfa)))
+
+  (calculo 10)
+
+
   )
