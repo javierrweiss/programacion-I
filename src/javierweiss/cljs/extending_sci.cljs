@@ -1,5 +1,5 @@
 (ns javierweiss.cljs.extending-sci
-    (:require [clerk-utils.custom]
+    (:require [javierweiss.cljs.user-inputs]
               ["react" :as react]
               [sci.ctx-store]
               [sci.core :as sci]))
