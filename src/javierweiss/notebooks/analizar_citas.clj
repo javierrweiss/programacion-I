@@ -409,6 +409,7 @@ persona-datos-basicos
 
 ^{:nextjournal.clerk/visibility {:code :hide :result :hide}} 
 (comment
+  (clerk/show! "src/javierweiss/notebooks/analizar_citas.clj")
   (clerk/serve! {:watch-paths ["src"] :port 13000})
   (clerk/clear-cache!)
 
