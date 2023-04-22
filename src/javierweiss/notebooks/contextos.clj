@@ -4,7 +4,7 @@
  :visibility :hide-ns}
 (ns javierweiss.notebooks.contextos
   (:require [nextjournal.clerk :as clerk]
-            [nextjournal.clerk.viewer :as viewer]
+            [nextjournal.clerk.viewer :as viewer] 
             #_[mentat.clerk-utils :as u]
             [javierweiss.custom-viewers.viewers :as v]
             [mentat.clerk-utils.show :as us]
@@ -24,16 +24,16 @@
 (defonce editable-code
   (atom "(def fib x)"))
 
+(clerk/with-viewer v/code-viewer nil)
 
 {:nextjournal.clerk/visibility {:code :hide}}
 (comment
-  (clerk/serve! {:browse? true}) 
-  
+  (clerk/serve! {:browse? true})
+
   (clerk/show! "src/javierweiss/notebooks/contextos.clj")
 
   (clerk/eval-cljs '(+ 2 4))
 
-  (clerk/eval-cljs-str "(+ 2 42)")
-
-  
+  (clerk/eval-cljs-str "(+ 2 42)") 
+  (nextjournal.clerk.sci-env/eval-form '(+ 2 3))
   )

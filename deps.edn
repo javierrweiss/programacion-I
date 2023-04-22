@@ -20,7 +20,8 @@
         net.sourceforge.tess4j/tess4j {:mvn/version "5.6.0"}
         ;; Clerk utils
         io.github.mentat-collective/clerk-utils
-        {:git/sha "a508ab01d0fb04a44c0a6a1dd510207b2ca7135e"}}
+        {:git/sha "a508ab01d0fb04a44c0a6a1dd510207b2ca7135e"}
+        org.clojure/tools.reader {:mvn/version "1.3.6"}}
  :aliases
  {:run-m {:main-opts ["-m" "javierweiss.programacion-I"]}
   :run-x {:ns-default javierweiss.programacion-I

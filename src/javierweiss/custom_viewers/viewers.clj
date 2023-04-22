@@ -27,6 +27,27 @@
    :render-fn
    '(fn [x]
       [:pre (javierweiss.cljs.user-inputs/testeando x) " 👋👋👋"])})
+
+(def code-viewer
+  {:render-fn
+   '(fn [value]
+      (let [default-value "(defn mas-diez [x] (+ x 10))
+                           (mas-diez 10)"
+            !input (reagent.core/atom default-value)
+            !compiled (reagent.core/atom "")
+            click-handler (fn []
+                            (reset! !compiled (-> @!input edn/read-string eval)))]
+        (fn [value]
+          [:div
+           [:div.flex
+            [:div.viewer-code.flex-auto.w-80.mb-2 [nextjournal.clerk.render.code/editor !input]]
+            [:button.flex-none.bg-slate-100.mb-2.pl-2.pr-2
+             {:on-click click-handler}
+             "Evaluar"]]
+           [:div.bg-slate-50
+            #_[nextjournal.clerk.render/render-code @!compiled]]
+            [nextjournal.clerk.render/inspect @!compiled]])))})
+
  
 (comment
   
