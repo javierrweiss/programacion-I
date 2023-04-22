@@ -3,8 +3,10 @@
   (:require [nextjournal.clerk :as clerk]
             [mentat.clerk-utils.show :as us]
             [nextjournal.clerk.viewer :as viewer]
-            [clojure.edn :as edn]))
-
+            [clojure.tools.reader :as r]
+            [clojure.tools.reader.edn :as edn]
+            [clojure.set :as set]))
+ 
 (def editor-sync-viewer
   (assoc viewer/viewer-eval-viewer
          :render-fn
@@ -31,12 +33,16 @@
 (def code-viewer
   {:render-fn
    '(fn [value]
-      (let [default-value "(defn mas-diez [x] (+ x 10))
-                           (mas-diez 10)"
+      (let [default-value value
             !input (reagent.core/atom default-value)
-            !compiled (reagent.core/atom "")
+            !compiled (reagent.core/atom)
+            safe-str? (fn [code] (if (re-seq #"load-string|eval|sh|read-string" code)
+                                   false
+                                   true))
             click-handler (fn []
-                            (reset! !compiled (-> @!input edn/read-string eval)))]
+                            (let [i @!input]
+                              (when (safe-str? i))
+                              (reset! !compiled (load-string i))))]
         (fn [value]
           [:div
            [:div.flex
@@ -44,13 +50,24 @@
             [:button.flex-none.bg-slate-100.mb-2.pl-2.pr-2
              {:on-click click-handler}
              "Evaluar"]]
-           [:div.bg-slate-50
-            #_[nextjournal.clerk.render/render-code @!compiled]]
-            [nextjournal.clerk.render/inspect @!compiled]])))})
+           [:div.bg-slate-50 
+            [nextjournal.clerk.render/inspect @!compiled]]])))})
 
  
 (comment
-  
-  (viewer/viewer-eval-viewer )
-  )
+  (load-string "(defn mas-diez [x] (+ x 10))
+                           (mas-diez 10)")
+  (r/read-string (str "#=" "(mas-diez 10)"))
 
+(defn safe-str?
+  [code]
+  (if (re-seq #"load-string|eval|sh|read-string" code)
+    false
+    true))  
+  (safe-str? "(+ 1 2) (sort [2 4 3 423 32 1]) (eval \"()\")")
+  (safe-str? "(((load-string \"(+ 43 43)\")))")
+
+(seq '(1 23 4))
+  (viewer/viewer-eval-viewer)
+  )
+ 

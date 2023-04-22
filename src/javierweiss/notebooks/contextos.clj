@@ -24,16 +24,16 @@
 (defonce editable-code
   (atom "(def fib x)"))
 
-(clerk/with-viewer v/code-viewer nil)
+(clerk/with-viewer v/code-viewer "(+ 13 5)")
 
+(clerk/with-viewer v/code-viewer "(defn cuadrado [x] (* x x))")
+
+ 
 {:nextjournal.clerk/visibility {:code :hide}}
 (comment
-  (clerk/serve! {:browse? true})
-
+  (clerk/serve! {:browse? true}) 
   (clerk/show! "src/javierweiss/notebooks/contextos.clj")
-
-  (clerk/eval-cljs '(+ 2 4))
-
-  (clerk/eval-cljs-str "(+ 2 42)") 
+  
+  (clerk/eval-cljs-str "(+ 2 42)")
   (nextjournal.clerk.sci-env/eval-form '(+ 2 3))
   )
